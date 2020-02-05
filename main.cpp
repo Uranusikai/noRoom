@@ -30,9 +30,6 @@ This program is a solution to Lab 2 --
 
 //** GLOBAL VARIABLES **/
 
-long freqclk = 16000000; // clock frequency in Hz
-
-
 
 //** FUNCTION DECLARATIONS **//
 
@@ -56,10 +53,8 @@ int main(void)
 
 	 	
 
-	DDRC = 0xFF;  // set bits PD7-PD5 as output, PD4-PD0 as input (this covers Pins 3 and 4 as needed for inputs, and 6 and 7 as needed for outputs)
-
-	PORTC = 0xFF; // set all bits on PORTC- so that all output are off (assumes circuit is wired as active low)
-
+	DDRC = 0xFF;  // Sets all pins of PORTC to output
+	PORTC = 0xFF; // Turn off all pins on PORTC (assume pins are configured as active low)
 		 
 
     // ============================================
@@ -67,51 +62,52 @@ int main(void)
     // P R O G R A M L O O P
 
     // ============================================
-while(1){	
-
-		PORTC = PORTC ^ 1 << PORTC0;
-		wait(10); // debounce delay
-		PORTC = PORTC ^ 1 << PORTC0;	
-
-	PORTC = 0xFF; // set all bits on PORTC- so that all output are off (assumes circuit is wired as active low)
+while(1)
+	{	
 	
-		while (PIND & 0B0000100)
+		PORTC = 0xFF; // Turn off all pins on PORTC (assume pins are configured as active low)
+	
+		PORTC = PORTC ^ 1 << PORTC0;	//Â anÂ individualÂ bitÂ withoutÂ changingÂ theÂ otherÂ bitsÂ inÂ  PC0
+		wait(200,2); // call delay function: the wait function will loop 200 time using delay #2 (1 msec each loop) for a total of 200 msec delay
+		PORTC = PORTC ^ 1 << PORTC0;	//Â anÂ individualÂ bitÂ withoutÂ changingÂ theÂ otherÂ bitsÂ inÂ  PC0
+
+		while (PIND & 0B0000100 & 0B0000100)	// Checking if PD2, the switch, is close.
 		{
-			PORTC = PORTC & 0B11110000;
+			PORTC = PORTC & 0B11110000;	// turn on all lights, which are from PC0 - PC3 
 		}
 	
-		PORTC = PORTC ^ 1 << PORTC1;	// an individual bit without changing the other bits in  PORTC
-		wait(10); // debounce delay
-		PORTC = PORTC ^ 1 << PORTC1;	// an individual bit without changing the other bits in  PORTC
-
-		PORTC = 0xFF; // set all bits on PORTC- so that all output are off (assumes circuit is wired as active low)
+		PORTC = 0xFF;// Turn off all pins on PORTC (assume pins are configured as active low)
 	
-		while (PIND & 0B00000100)
+		PORTC = PORTC ^ 1 << PORTC1;	//Â anÂ individualÂ bitÂ withoutÂ changingÂ theÂ otherÂ bitsÂ inÂ  PC1
+		wait(200,2); // call delay function: the wait function will loop 200 time using delay #2 (1 msec each loop) for a total of 200 msec delay
+		PORTC = PORTC ^ 1 << PORTC1;	//Â anÂ individualÂ bitÂ withoutÂ changingÂ theÂ otherÂ bitsÂ inÂ  PC1
+
+
+		while (PIND & 0B0000100 & 0B0000100)	// Checking if PD2, the switch, is close.
 		{
-			 PORTC = PORTC & 0B11110000;
+			PORTC = PORTC & 0B11110000;	// turn on all lights, which are from PC0 - PC3 
 		}
 		
-
-		PORTC = PORTC ^ 1 << PORTC2;	// an individual bit without changing the other bits in  PORTC
-		wait(10); // debounce delay
-		PORTC = PORTC ^ 1 << PORTC2;	// an individual bit without changing the other bits in  PORTC
-				
-		PORTC = 0xFF; // set all bits on PORTC- so that all output are off (assumes circuit is wired as active low)
+		PORTC = 0xFF; // Turn off all pins on PORTC (assume pins are configured as active low)
 	
-		while (PIND & 0B00000100)
-		{ 
-			PORTC = PORTC & 0B11110000;
+		PORTC = PORTC ^ 1 << PORTC2;	//Â anÂ individualÂ bitÂ withoutÂ changingÂ theÂ otherÂ bitsÂ inÂ  PC2
+		wait(200,2); // call delay function: the wait function will loop 200 time using delay #2 (1 msec each loop) for a total of 200 msec delay
+		PORTC = PORTC ^ 1 << PORTC2;	//Â anÂ individualÂ bitÂ withoutÂ changingÂ theÂ otherÂ bitsÂ inÂ  PC2
+				
+		while (PIND & 0B0000100 & 0B0000100)	// Checking if PD2, the switch, is close.
+		{
+			PORTC = PORTC & 0B11110000;	// turn on all lights, which are from PC0 - PC3 
 		}
 
-		PORTC = PORTC ^ 1 << PORTC3;	// an individual bit without changing the other bits in  PORTC
-		wait(10); // debounce delay
-		PORTC = PORTC ^ 1 << PORTC3;	// an individual bit without changing the other bits in  PORTC
+		PORTC = PORTC ^ 1 << PORTC3;	//Â anÂ individualÂ bitÂ withoutÂ changingÂ theÂ otherÂ bitsÂ inÂ  PC3
+		wait(200,2); // call delay function: the wait function will loop 200 time using delay #2 (1 msec each loop) for a total of 200 msec delay
+		PORTC = PORTC ^ 1 << PORTC3;	//Â anÂ individualÂ bitÂ withoutÂ changingÂ theÂ otherÂ bitsÂ inÂ  PC3
 				
-		PORTC = 0xFF; // set all bits on PORTC- so that all output are off (assumes circuit is wired as active low)
+		PORTC = 0xFF; // Turn off all pins on PORTC (assume pins are configured as active low)
 	
-		while (PIND & 0B00000100)
-		{ 
-			PORTC = PORTC & 0B11110000;
+		while (PIND & 0B0000100 & 0B0000100)	// Checking if PD2, the switch, is close.
+		{
+			PORTC = PORTC & 0B11110000;	// turn on all lights, which are from PC0 - PC3 
 		}		
 
 	}
@@ -124,68 +120,60 @@ while(1){
 
 // ============================================
 
-void wait(volatile int N) {
-
-	//*** wait ***
-
-		
-
-	/* This subroutine creates a delay of N msec by calling another function.
-
-			Inputs: N = number of msec for the delay (N is int, so can be up to 65,536 msec)
-
-			Outputs: None
-
-			
-
-		Why is N a volatile variable? Some C compilers try to optimize the code and may eliminate code that appears to do nothing.  A time-killing 
-
-		loop is is one of those code blocks that could be removed during compile.  Using a nonvolatile variable in the function tells the compiler not 
-
-		remove it.
-
+void wait(volatile int multiple, volatile char time_choice) {
+	/* This subroutine calls others to create a delay.
+		 Total delay = multiple*T, where T is in msec and is the delay created by the called function.
+	
+		Inputs: multiple = number of multiples to delay, where multiple is the number of times an actual delay loop is called.
+		Outputs: None
 	*/
-
-	while (N>1) {  // This loop creates an N msec delay
-
-		N--;
-
-		delay_1_msec_raw_count();
-
+	
+	while (multiple > 0) {
+		delay_T_msec_timer0(time_choice); 
+		multiple--;
 	}
-
 } // end wait()
 
-
-
-void delay_1_msec_raw_count() {
-
-    //*** delay N ms **
-
-    /* This subroutine creates a delay of N msec by using a raw time-killing count.
-
-			Inputs: None
-
-			Outputs: None
-
-	*/
-
-	volatile int count = (freqclk/1000-28)/4; // each cycle takes 4 clock cycles, so count is the number of cycles needed to create a 1 msec delay.
-
-									// 28 is the approximate number of other clock cycles used in the subroutine
-
-	while (count > 1) {  // This loop is expected to create a 1 msec delay, but it is in fact much longer.  Because of the size of the variables,
-
-			// there is a lot more that needs to be done each cycle so the loop takes much longer than 1 msec to execute. To know exact time for each 
-
-			// instruction, use assembly language instead of C. (Or look at the disassembly code file and count instructions.)
-
-			count--; // decrement count
-
-	}
-
+void delay_T_msec_timer0(volatile char choice) {
+    //*** delay T ms **
+    /* This subroutine creates a delay of T msec using TIMER0 with prescaler on clock, where, for a 16MHz clock:
+    		for Choice = 1: T = 0.125 msec for prescaler set to 8 and count of 250 (preload counter with 5)
+    		for Choice = 2: T = 1 msec for prescaler set to 64 and count of 250 (preload counter with 5)
+    		for Choice = 3: T = 4 msec for prescaler set to 256 and count of 250 (preload counter with 5)
+    		for Choice = 4: T = 16 msec for prescaler set to 1,024 and count of 250 (preload counter with 5)
+			for Choice = Default: T = .0156 msec for no prescaler and count of 250 (preload counter with 5)
 	
-
-		
-
-} // end delay_1_msec_raw_count()
+			Inputs: None
+			Outputs: None
+	*/
+	
+	TCCR0A = 0x00; // clears WGM00 and WGM01 (bits 0 and 1) to ensure Timer/Counter is in normal mode.
+	TCNT0 = 0;  // preload value for testing on count = 250
+	// preload value for alternate test on while loop: TCNT0 = 5;  // preload load TIMER0  (count must reach 255-5 = 250)
+	
+	switch ( choice ) { // choose prescaler
+		case 1:
+			TCCR0B = 0b00000010; //1<<CS01;	TCCR0B = 0x02; // Start TIMER0, Normal mode, crystal clock, prescaler = 8
+		break;
+		case 2:
+			TCCR0B =  0b00000011; //1<<CS01 | 1<<CS00;	TCCR0B = 0x03;  // Start TIMER0, Normal mode, crystal clock, prescaler = 64
+		break;
+		case 3:
+			TCCR0B = 0b00000100; //1<<CS02;	TCCR0B = 0x04; // Start TIMER0, Normal mode, crystal clock, prescaler = 256
+		break; 
+		case 4:
+			TCCR0B = 0b00000101; //1<<CS02 | 1<<CS00; TCCR0B = 0x05; // Start TIMER0, Normal mode, crystal clock, prescaler = 1024
+		break;
+		default:
+			TCCR0B = 0b00000001; //1<<CS00; TCCR0B = 0x01; Start TIMER0, Normal mode, crystal clock, no prescaler
+		break;
+	}
+	
+	while (TCNT0 < 0xFA); // exits when count = 250 (requires preload of 0 to make count = 250)
+	// alternate test on while loop: while ((TIFR0 & (0x1<<TOV0)) == 0); // wait for TOV0 to roll over:
+	// How does this while loop work?? See notes
+	
+	TCCR0B = 0x00; // Stop TIMER0
+	//TIFR0 = 0x1<<TOV0;  // Alternate while loop: Clear TOV0 (note that this is a nonintuitive bit in that it is cleared by writing a 1 to it)
+	
+} // end delay_T_msec_timer0()

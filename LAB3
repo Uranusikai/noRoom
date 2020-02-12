@@ -132,7 +132,7 @@ while(1)
 	{	
 		PORTC = PORTC ^ 1 << PORTC0;	// an individual bit without changing the other bits in  PC0
 
-		wait(100,2); // call delay function: the wait function will loop 200 time using delay #2 (1 msec each loop) for a total of 200 msec delay
+		wait(1000,2); // call delay function: the wait function will loop 200 time using delay #2 (1 msec each loop) for a total of 200 msec delay
 
 		PORTC = PORTC ^ 1 << PORTC0;	// an individual bit without changing the other bits in  PC0
 
@@ -152,7 +152,7 @@ while(1)
 	
 		PORTC = PORTC ^ 1 << PORTC1;	// an individual bit without changing the other bits in  PC1
 
-		wait(100,2); // call delay function: the wait function will loop 200 time using delay #2 (1 msec each loop) for a total of 200 msec delay
+		wait(1000,2); // call delay function: the wait function will loop 200 time using delay #2 (1 msec each loop) for a total of 200 msec delay
 
 		PORTC = PORTC ^ 1 << PORTC1;	// an individual bit without changing the other bits in  PC1
 
@@ -171,7 +171,7 @@ while(1)
 
 		PORTC = PORTC ^ 1 << PORTC2;	// an individual bit without changing the other bits in  PC2
 
-		wait(100,2); // call delay function: the wait function will loop 200 time using delay #2 (1 msec each loop) for a total of 200 msec delay
+		wait(1000,2); // call delay function: the wait function will loop 200 time using delay #2 (1 msec each loop) for a total of 200 msec delay
 
 		PORTC = PORTC ^ 1 << PORTC2;	// an individual bit without changing the other bits in  PC2
 
@@ -192,7 +192,7 @@ while(1)
 
 		PORTC = PORTC ^ 1 << PORTC3;	// an individual bit without changing the other bits in  PC3
 
-		wait(100,2); // call delay function: the wait function will loop 200 time using delay #2 (1 msec each loop) for a total of 200 msec delay
+		wait(1000,2); // call delay function: the wait function will loop 200 time using delay #2 (1 msec each loop) for a total of 200 msec delay
 
 		PORTC = PORTC ^ 1 << PORTC3;	// an individual bit without changing the other bits in  PC3
 
@@ -235,12 +235,15 @@ ISR(INT0_vect) // This routine is entered if Switch 1 goes high (door 1 is opene
 {
 
 
-	PORTC = PORTC & 0b11111011; // Turn on LED by clearing PC2 (which is active low),  leave other bits unchanged  (AND PORTC with a binary number that has 0 in the only bit that we want to ensure is 0)
+	PORTC = PORTC | 0b11111111; // clear
 
 	count_door1++; // Increment count on door opening
 
 	wait(debounce,2); // debounce the switch
 
+	int c = 0b00000000;
+	PORTC = PORTC & 0xFF; //Clear
+	wait(debounce,2);
 	
 
 	while ((PIND & 0b00000100)) // wait for PD2 to go low again (wait for door to close). "Read" the contents of PortD2 using bit-wise operation (AND PIND with binary 4 so that only PD2 is read).  Exit the loop when it is 0.
@@ -266,15 +269,15 @@ ISR(INT1_vect)
 
 {
 
-	PORTC = PORTC & 0b11110111; // Turn on LED by clearing PC3 (which is active low),  leave other bits unchanged  (AND PORTC with a binary number that has 0 in the only bit that we want to ensure is 0)
+	PORTC = PORTC & 0b11110000; // Turn on LED by clearing PC3 (which is active low),  leave other bits unchanged  (AND PORTC with a binary number that has 0 in the only bit that we want to ensure is 0)
 
 	count_door2++; // Increment count on door opening
 
-	wait(debounce,2); // debounce the switch
+	wait(20000,2); // debounce the switch
 
 	
 
-	while ((PIND & 0b00001000)) // wait for PD3 to go low again (wait for door to close). "Read" the contents of PortD3 using bit-wise operation (AND PIND with binary 8 so that only PD2 is read).  Exit the loop when it is 0.
+	while ((PIND & 0b11110000)) // wait for PD3 to go low again (wait for door to close). "Read" the contents of PortD3 using bit-wise operation (AND PIND with binary 8 so that only PD2 is read).  Exit the loop when it is 0.
 
 	{
 
@@ -284,7 +287,7 @@ ISR(INT1_vect)
 
 	
 
-	PORTC = PORTC | 0b00001000;  // Turn off LED by setting bit PC3 (which is active low), leave other bits unchanged (OR PORTC with a binary number that has 1 in the only bit that we want to ensure is 1)
+	PORTC = PORTC | 0b00001111;  // Turn off LEDs by setting bit PC3 (which is active high), leave other bits unchanged (and PORTC with a binary number that has 1 in the only bit that we want to ensure is 0)
 
 	wait(debounce,2); // debounce the switch
 
